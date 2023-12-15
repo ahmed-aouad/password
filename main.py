@@ -2,6 +2,7 @@ import hashlib
 import json
 import random
 
+# cette fonction génère un mot de passe aléatoire avec au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.
 def generer_random_password():
     lettre = "abcdefghijklmnopqrstuvwxy"
     lettre_M = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -16,16 +17,16 @@ def generer_random_password():
     ''.join(random.choice(lettre + lettre_M + nombre + speciale) for _ in range(8))
     )
     
-    # 
+     # Mélanger les caractères du mot de passe
     password_list = list(password_c)
     random.shuffle(password_list)
     shuffled_password = ''.join(password_list)
     return shuffled_password
     
    
-
+# Fonction pour hacher le mot de passe en utilisant l'algorithme SHA-256
 def hash_password(password):
-     # Fonction pour hacher le mot de passe en utilisant l'algorithme SHA-256
+     
     hashed_password = hashlib.sha256(password.encode("utf-8")).hexdigest()
     return hashed_password
 
@@ -44,6 +45,7 @@ def save_passwords(passwords, filename="mdp.json"):
     with open(filename, "w") as file:
         json.dump(passwords, file, indent=4)
 
+# Cette fonction vérifie la "force" du mot de passe et permet à l'utilisateur de génére un mot de passe aléatoire ou d'entrer son propre mot de passe
 def is_password_strong():
     hashed_passwords = load_passwords()
 
@@ -72,12 +74,14 @@ def is_password_strong():
             hashed_password = hash_password(password)
             print("Mot de passe haché :", hashed_password)
             
+            # Enregistrer le mot de passe haché dans le fichier
             save_option = input("Voulez-vous enregistrer ce mot de passe dans le fichier (Oui/Non) : ")
             if save_option.lower() == "oui":
                 hashed_passwords.append(hashed_password)  
                 save_passwords(hashed_passwords)  
                 print("Mot de passe enregistré dans le fichier.")
             
+              # Afficher la liste des mots de passe hachés
             show_option = input("Voulez-vous afficher la liste des mots de passe hachés? (Oui/Non) ")
             if show_option.lower() == "oui":
                 print("Liste des mots de passe hachés :", hashed_passwords)
